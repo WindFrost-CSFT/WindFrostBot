@@ -62,11 +62,13 @@ namespace WindFrostBot.SDK
                     var handler = new GroupAtArgs(new QCommand(eventArgs), eventArgs.Message.ToString());
                     MainSDK.OnGroupAt.ExecuteAll(handler);
                 }
-                foreach (var cmd in Coms)
+                var ongroupmessage = new GroupMessgaeArgs(new QCommand(eventArgs), eventArgs.Message.ToString());
+                MainSDK.OnGroupMessgae.ExecuteAll(ongroupmessage);
+                if (!ongroupmessage.Handled)
                 {
-                    if (cmd != null && cmd.Names.Contains(msg))
+                    foreach (var cmd in Coms)
                     {
-                        if (cmd.Type == 0)
+                        if (cmd != null && cmd.Names.Contains(msg) && cmd.Type == 0)
                         {
                             try
                             {
@@ -79,7 +81,6 @@ namespace WindFrostBot.SDK
                             }
                             catch (Exception ex)
                             {
-                                Message.LogErro(ex.Message);
                                 if (ex.Message.Contains("System.NullReferenceException"))
                                 {
                                     Environment.Exit(0);

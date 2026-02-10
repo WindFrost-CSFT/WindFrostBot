@@ -3,7 +3,6 @@ using Sora.Entities;
 using Sora.Entities.Segment;
 using Sora.EventArgs.SoraEvent;
 using Sora.Entities.Info;
-using System.IO;
 
 namespace WindFrostBot.SDK
 {
@@ -30,41 +29,142 @@ namespace WindFrostBot.SDK
             Type = 1;
             PrivateMessageEvent = eventArgs;
         }
+        //private MessageBody _messageBody = new MessageBody();
         public void SendTextMessage(string message)
         {
-            switch(Type)
+            MessageBody body = message;
+            try
             {
-                case 0:
-                    MessageBody body = message;
-                    SourceGroup?.SendGroupMessage(body);
-                    //MainSDK.service.GetApi(MainSDK.service.ServiceId).SendGroupMessage(Group , body);
-                    break;
-                case 1:
-                    body = message;
-                    PrivateMessageEvent?.Sender.SendPrivateMessage(body);
-                    //MainSDK.service.GetApi(MainSDK.service.ServiceId).SendPrivateMessage(Account, body);
-                    break;
-                default:
-                    break;
+                switch (Type)
+                {
+                    case 0:
+                        //SourceGroup.SendGroupMessage(body);
+                        MainSDK.service.GetApi(MainSDK.service.ServiceId).SendGroupMessage(Group , body);
+                        break;
+                    case 1:
+                        //PrivateMessageEvent.Sender.SendPrivateMessage(body);
+                        MainSDK.service.GetApi(MainSDK.service.ServiceId).SendPrivateMessage(Account, body);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch(Exception ex)
+            {
+                if(MainSDK.service == null)
+                {
+                    Message.Erro("unknown servive");
+
+                }
+                else
+                {
+                    Message.Erro($"{MainSDK.service.ServiceId.ToString()}");
+
+                }
+                Message.Erro(ex.ToString());
+                switch (Type)
+                {
+                    case 0:
+                        Environment.Exit(0);
+                        //MainSDK.OnReStartGroupMessage.ExecuteAll(new ReStartGroupMessageArgs(this, body));
+                        break;
+                }
             }
         }
-        public void ReplyMessage(string message)
+        public QCommand ReplyMessage(string message)
         {
             int id = GroupMessageEvent.Message.MessageId;
+            //_messageBody.Add()
             MessageBody body = new MessageBody(new List<SoraSegment>()
             {
-                        SoraSegment.Reply(id),
-                        SoraSegment.Text(message)
+                SoraSegment.Reply(id),
+                SoraSegment.Text(message)
              });
+            try
+            {
+                switch (Type)
+                {
+                    case 0:
+                        MainSDK.service.GetApi(MainSDK.service.ServiceId).SendGroupMessage(Group, body);
+                        //SourceGroup?.SendGroupMessage(body);
+                        break;
+                    case 1:
+                        PrivateMessageEvent?.Sender.SendPrivateMessage(body);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch
+            {
+                switch (Type)
+                {
+                    case 0:
+                        Environment.Exit(0);
+                        //MainSDK.OnReStartGroupMessage.ExecuteAll(new ReStartGroupMessageArgs(this, body));
+                        break;
+                }
+            }
+            return this;
+        }
+        public void UploadFile(string path, string name)
+        {
             switch (Type)
             {
                 case 0:
-                    SourceGroup?.SendGroupMessage(body);
+                    new Task(async () =>
+                    {
+                        try
+                        {
+                            await MainSDK.service.GetApi(MainSDK.service.ServiceId).UploadGroupFile(Group, path, name);
+                        }
+                        catch
+                        {
+
+                        }
+                    }).Start(); 
                     break;
                 case 1:
-                    PrivateMessageEvent?.Sender.SendPrivateMessage(body);
                     break;
-                default:
+            }
+        }
+        public void UploadFile(byte[] data, string path, string name,string foldname = "")
+        {
+            FileStream file = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
+            file.Write(data, 0, data.Length);
+            file.Close();
+            switch (Type)
+            {
+                case 0:
+                    if (!string.IsNullOrEmpty(foldname))
+                    {
+                        var folds = GroupMessageEvent.SourceGroup.GetGroupRootFiles().Result.groupFolders;
+                        bool flag = false;
+                        folds.ForEach(f =>
+                        {
+                            if(f.Name == foldname)
+                            {
+                                new Task(async () =>
+                                {
+                                    await MainSDK.service.GetApi(MainSDK.service.ServiceId).UploadGroupFile(Group, path, name, f.Id);
+                                    File.Delete(path);
+                                }).Start();
+                                flag = true;
+                                return;
+                            }
+                        });
+                        if (flag)
+                        {
+                            return;
+                        }
+                    }
+                    new Task(async () =>
+                    {
+                        await MainSDK.service.GetApi(MainSDK.service.ServiceId).UploadGroupFile(Group, path, name);
+                        File.Delete(path);
+                    }).Start();
+                    break;
+                case 1:
                     break;
             }
         }
@@ -77,14 +177,27 @@ namespace WindFrostBot.SDK
             {
                 SoraSegment.Image(stream) // 生成图片消息段
             });
-            switch (Type)
+            try
             {
-                case 0:
-                    GroupMessageEvent?.SourceGroup.SendGroupMessage(body);
-                    break;
-                case 1:
-                    PrivateMessageEvent?.Sender.SendPrivateMessage(body);
-                    break;
+                switch (Type)
+                {
+                    case 0:
+                        GroupMessageEvent?.SourceGroup.SendGroupMessage(body);
+                        break;
+                    case 1:
+                        PrivateMessageEvent?.Sender.SendPrivateMessage(body);
+                        break;
+                }
+            }
+            catch
+            {
+                switch (Type) 
+                { 
+                    case 0:
+                        Environment.Exit(0);
+                        //.OnReStartGroupMessage.ExecuteAll(new ReStartGroupMessageArgs(this, body));
+                        break; 
+                }
             }
         }
         public void SendImage(byte[] bytes)
@@ -94,25 +207,71 @@ namespace WindFrostBot.SDK
             {
                   SoraSegment.Image(stream)// 生成图片消息段
             });
-            switch (Type)
+            try
             {
-                case 0:
-                    SourceGroup?.SendGroupMessage(body);
-                    break;
-                case 1:
-                    PrivateMessageEvent?.Sender.SendPrivateMessage(body);
-                    break;
+                switch (Type)
+                {
+                    case 0:
+                        SourceGroup?.SendGroupMessage(body);
+                        break;
+                    case 1:
+                        PrivateMessageEvent?.Sender.SendPrivateMessage(body);
+                        break;
+                }
+            }
+            catch
+            {
+                switch (Type)
+                {
+                    case 0:
+                        Environment.Exit(0);
+                        //MainSDK.OnReStartGroupMessage.ExecuteAll(new ReStartGroupMessageArgs(this, body));
+                        break;
+                }
+            }
+        }
+        public void SendComplex(MessageBody body)
+        {
+            try
+            {
+                switch (Type)
+                {
+                    case 0:
+                        SourceGroup?.SendGroupMessage(body);
+                        break;
+                    case 1:
+                        PrivateMessageEvent?.Sender.SendPrivateMessage(body);
+                        break;
+                }
+            }
+            catch
+            {
+                switch (Type)
+                {
+                    case 0:
+                        Environment.Exit(0);
+                        //MainSDK.OnReStartGroupMessage.ExecuteAll(new ReStartGroupMessageArgs(this, body));
+                        break;
+                }
             }
         }
         public List<GroupMemberInfo>? GetGroupMemembers()
         {
-            switch(Type) { 
-                case 0:
-                    if(GroupMessageEvent != null)
-                    {
-                        return MainSDK.service.GetApi(GroupMessageEvent.ServiceId).GetGroupMemberList(Group).Result.groupMemberList;
-                    }
-                    return null;
+            try
+            {
+                switch (Type)
+                {
+                    case 0:
+                        if (GroupMessageEvent != null)
+                        {
+                            return MainSDK.service.GetApi(GroupMessageEvent.ServiceId).GetGroupMemberList(Group).Result.groupMemberList;
+                        }
+                        return null;
+                }
+            }
+            catch
+            {
+
             }
             return null;
         }

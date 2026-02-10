@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "FvmkLQXhvDk=",
+  "dgSpecHash": "VcE9oQ6AoQU=",
   "success": true,
   "projectFilePath": "C:\\Users\\cjx01\\Desktop\\项目\\CSharp\\Bot\\QQ\\WinFrostBot.SDK\\WindFrostBot.SDK.csproj",
   "expectedPackageFiles": [
@@ -23,7 +23,6 @@
     "C:\\Users\\cjx01\\.nuget\\packages\\sixlabors.fonts\\2.0.8\\sixlabors.fonts.2.0.8.nupkg.sha512",
     "C:\\Users\\cjx01\\.nuget\\packages\\sixlabors.imagesharp\\3.1.7\\sixlabors.imagesharp.3.1.7.nupkg.sha512",
     "C:\\Users\\cjx01\\.nuget\\packages\\sixlabors.imagesharp.drawing\\2.1.5\\sixlabors.imagesharp.drawing.2.1.5.nupkg.sha512",
-    "C:\\Users\\cjx01\\.nuget\\packages\\sora\\1.4.3\\sora.1.4.3.nupkg.sha512",
     "C:\\Users\\cjx01\\.nuget\\packages\\system.buffers\\4.5.1\\system.buffers.4.5.1.nupkg.sha512",
     "C:\\Users\\cjx01\\.nuget\\packages\\system.collections.immutable\\7.0.0\\system.collections.immutable.7.0.0.nupkg.sha512",
     "C:\\Users\\cjx01\\.nuget\\packages\\system.configuration.configurationmanager\\4.4.1\\system.configuration.configurationmanager.4.4.1.nupkg.sha512",
@@ -51,7 +50,21 @@
     "C:\\Users\\cjx01\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512",
     "C:\\Users\\cjx01\\.nuget\\packages\\websocket.client\\5.0.0\\websocket.client.5.0.0.nupkg.sha512",
     "C:\\Users\\cjx01\\.nuget\\packages\\yukaritoolbox.lightlog\\3.0.9\\yukaritoolbox.lightlog.3.0.9.nupkg.sha512",
-    "C:\\Users\\cjx01\\.nuget\\packages\\zstdsharp.port\\0.7.1\\zstdsharp.port.0.7.1.nupkg.sha512"
+    "C:\\Users\\cjx01\\.nuget\\packages\\zstdsharp.port\\0.7.1\\zstdsharp.port.0.7.1.nupkg.sha512",
+    "C:\\Users\\cjx01\\.nuget\\packages\\sora\\1.4.3\\sora.1.4.3.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "message": "包 \"SixLabors.ImageSharp\" 3.1.7 具有已知的 中 严重性漏洞，https://github.com/advisories/GHSA-rxmq-m78w-7wmc",
+      "projectPath": "C:\\Users\\cjx01\\Desktop\\项目\\CSharp\\Bot\\QQ\\WinFrostBot.SDK\\WindFrostBot.SDK.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\cjx01\\Desktop\\项目\\CSharp\\Bot\\QQ\\WinFrostBot.SDK\\WindFrostBot.SDK.csproj",
+      "libraryId": "SixLabors.ImageSharp",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
 }

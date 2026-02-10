@@ -246,5 +246,10 @@ namespace WindFrostBot.SDK.Utils
             }
             return false;
         }
+        public static SoraSegment Image(byte[] bytes)
+        {
+            Stream stream = new MemoryStream(bytes);
+            return SoraSegment.Image(stream);
+        }
     }
 }

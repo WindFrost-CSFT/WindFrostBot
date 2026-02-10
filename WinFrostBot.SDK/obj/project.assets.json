@@ -313,28 +313,6 @@
           }
         }
       },
-      "Sora/1.4.3": {
-        "type": "package",
-        "dependencies": {
-          "Fleck": "1.2.0",
-          "Microsoft.Extensions.DependencyInjection": "7.0.0",
-          "Newtonsoft.Json": "13.0.3",
-          "System.Reactive": "6.0.0",
-          "Websocket.Client": "5.0.0",
-          "YukariToolBox.LightLog": "3.0.9",
-          "protobuf-net": "3.2.30"
-        },
-        "compile": {
-          "lib/net6.0/Sora.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/Sora.dll": {
-            "related": ".xml"
-          }
-        }
-      },
       "System.Buffers/4.5.1": {
         "type": "package",
         "compile": {
@@ -780,6 +758,25 @@
         },
         "runtime": {
           "lib/net7.0/ZstdSharp.dll": {}
+        }
+      },
+      "Sora/1.4.3": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "Fleck": "1.2.0",
+          "Microsoft.Extensions.DependencyInjection": "7.0.0",
+          "Newtonsoft.Json": "13.0.3",
+          "System.Reactive": "6.0.0",
+          "Websocket.Client": "5.0.0",
+          "YukariToolBox.LightLog": "3.0.9",
+          "protobuf-net": "3.2.30"
+        },
+        "compile": {
+          "bin/placeholder/Sora.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Sora.dll": {}
         }
       }
     }
@@ -1247,20 +1244,6 @@
         "sixlabors.imagesharp.drawing.128.png",
         "sixlabors.imagesharp.drawing.2.1.5.nupkg.sha512",
         "sixlabors.imagesharp.drawing.nuspec"
-      ]
-    },
-    "Sora/1.4.3": {
-      "sha512": "zX+EbN4QY+pWJBDL8ZyS29totb0tE3QKbKQTdfRAtym/g1HJRt06+dXsV/3OIfRt5JfIWQ8c+utUF+WBp9J1gQ==",
-      "type": "package",
-      "path": "sora/1.4.3",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "icon.png",
-        "lib/net6.0/Sora.dll",
-        "lib/net6.0/Sora.xml",
-        "sora.1.4.3.nupkg.sha512",
-        "sora.nuspec"
       ]
     },
     "System.Buffers/4.5.1": {
@@ -2424,6 +2407,11 @@
         "zstdsharp.port.0.7.1.nupkg.sha512",
         "zstdsharp.port.nuspec"
       ]
+    },
+    "Sora/1.4.3": {
+      "type": "project",
+      "path": "../../Sora/Sora/Sora.csproj",
+      "msbuildProject": "../../Sora/Sora/Sora.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -2468,7 +2456,11 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\cjx01\\Desktop\\项目\\CSharp\\Bot\\Sora\\Sora\\Sora.csproj": {
+              "projectPath": "C:\\Users\\cjx01\\Desktop\\项目\\CSharp\\Bot\\Sora\\Sora\\Sora.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -2480,7 +2472,8 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net8.0": {
@@ -2501,10 +2494,6 @@
           "SixLabors.ImageSharp.Drawing": {
             "target": "Package",
             "version": "[2.1.5, )"
-          },
-          "Sora": {
-            "target": "Package",
-            "version": "[1.4.3, )"
           },
           "System.Drawing.Common": {
             "target": "Package",
@@ -2527,8 +2516,20 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "包 \"SixLabors.ImageSharp\" 3.1.7 具有已知的 中 严重性漏洞，https://github.com/advisories/GHSA-rxmq-m78w-7wmc",
+      "libraryId": "SixLabors.ImageSharp",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
 }

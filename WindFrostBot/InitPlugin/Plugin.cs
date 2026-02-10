@@ -28,10 +28,24 @@ namespace WindFrostBot
         }
         public override void OnLoad()
         {
+            //MainSDK.OnReStartGroupMessage.AddFunction(this, OnGroupMessageRestart);
             Admin.Init(this);//添加管理指令
             Group.Init(this);//添加群聊指令
             CommandManager.InitGroupCommand(this, Reload, "重读配置", "reload", "重读","重读配置");
             //重读事件
+        }
+        public void OnGroupMessageRestart(ReStartGroupMessageArgs args)
+        {
+            Program.ReStartSora();
+            try
+            {
+                args.ReSend();
+            }
+            catch(Exception ex)
+            {
+                Message.Erro(ex.Message);
+                Environment.Exit(0);
+            }
         }
         public override string OnReload()
         {

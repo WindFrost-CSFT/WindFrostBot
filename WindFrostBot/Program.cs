@@ -49,7 +49,12 @@ namespace WindFrostBot
             for(; ;)
                 Console.ReadLine();
         }
-        public static  async void StartSora()
+        public static async void ReStartSora()
+        {
+            await MainSDK.service.StopService();
+            StartSora();
+        }
+        public static async void StartSora()
         {
             if (MainSDK.BotConfig.SoraLog)
             {
