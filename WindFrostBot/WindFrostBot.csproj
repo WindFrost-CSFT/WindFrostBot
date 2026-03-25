@@ -5,9 +5,14 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <DebugType>embedded</DebugType>
   </PropertyGroup>
 
-  <Target Name="MoveFilesToBin" AfterTargets="AfterBuild">
+  <Target Name="MoveFilesToBin" AfterTargets="AfterBuild" Condition="'$(PublishSingleFile)' != 'true'">
     <!-- 指定要移动的文件类型，这里以 .dll 为例 -->
     <ItemGroup>
       <FilesToMove Include="$(OutputPath)*.dll;$(OutputPath)*.pdb" Exclude="$(OutputPath)WindFrostBot.dll;$(OutputPath)WindFrostBot.SDK.dll;$(OutputPath)Spectre.Console.dll" />
@@ -24,16 +29,11 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Spectre.Console" Version="0.49.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\WinFrostBot.SDK\WindFrostBot.SDK.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Spectre.Console">
-      <HintPath>..\..\..\Spectre.Console.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>
